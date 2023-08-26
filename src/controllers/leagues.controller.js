@@ -18,6 +18,24 @@ const insertLeagues = async (req, res) => {
     }
 };
 
+const insertTeam = async (req, res) => {
+    try {
+        const { team_id, code, country, founded, logo, name, national, capacidad_venue, city, id_venue, image_venue, name_venue } = req.body;
+        console.log(req.body);
+        
+        const con = await getConnection();
+        const query = `
+        INSERT INTO bettracker.teams (team_id, code, country, founded, logo, name, national, capacidad_venue, city, id_venue, image_venue, name_venue)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        `;
+        const result = await con.query(query, [team_id, code, country, founded, logo, name, national, capacidad_venue, city, id_venue, image_venue, name_venue]);
+
+        res.status(200).json({ message: "Team inserted successfully." });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
 const insertNose = async (req, res) => {
     try {
         const { nosecol } = req.body;
@@ -62,5 +80,6 @@ export const methods = {
     insertLeagues,
     getNose,
     insertNose,
-    getLeagues
+    getLeagues,
+    insertTeam
 };
