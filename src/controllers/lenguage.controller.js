@@ -6,7 +6,7 @@ const getLenguages = async (req, res) => {
         res.json(lenguages);
     }catch(error){
     res.status(500);
-    res.send(error.message);   
+    res.send(error.message);
  }
 }
 
