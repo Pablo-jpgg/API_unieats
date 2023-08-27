@@ -54,6 +54,24 @@ const insertNose = async (req, res) => {
     }
 };
 
+const insertTimeZone = async (req, res) => {
+    try {
+        const { time_zone } = req.body;
+        console.log(time_zone);
+        
+        const con = await getConnection();
+        const query = `
+            INSERT INTO bettracker.time_zone (time_zone)
+            VALUES (?)
+        `;
+        await con.query(query, [time_zone]);
+
+        res.status(200).json({ message: "Nose insert nashe." });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
 const getNose = async (req, res) => {
     try{
         const con = await getConnection();
@@ -76,10 +94,49 @@ const getLeagues = async (req, res) => {
  }
 }
 
+
+const getTeams = async (req, res) => {
+    try{
+        const con = await getConnection();
+        const lenguages = await con.query('SELECT * FROM bettracker.teams');
+        res.json(lenguages);
+    }catch(error){
+    res.status(400);
+    res.send(error.message);
+ }
+}
+
+const getTimeZone = async (req, res) => {
+    try{
+        const con = await getConnection();
+        const lenguages = await con.query('SELECT * FROM bettracker.time_zone');
+        res.json(lenguages);
+    }catch(error){
+    res.status(400);
+    res.send(error.message);
+ }
+}
+
+const getTeamsByCountry = async (req, res) => {
+    try {
+        const { country } = req.query; // Obtener el parámetro 'country' de la consulta
+        console.log(country);
+        const con = await getConnection();
+        const teams = await con.query('SELECT * FROM bettracker.teams WHERE country = ?', [country]);
+        res.json(teams);
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
+
 export const methods = {
     insertLeagues,
     getNose,
     insertNose,
     getLeagues,
-    insertTeam
+    insertTeam,
+    getTeams,
+    getTeamsByCountry,
+    insertTimeZone,
+    getTimeZone
 };
