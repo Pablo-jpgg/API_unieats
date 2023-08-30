@@ -36,6 +36,48 @@ const insertTeam = async (req, res) => {
     }
 };
 
+const insertMatch = async (req, res) => {
+    try {
+        const { date, id_venue, city, status, league_id, country, league, season, round, team_home, team_away, id_team_home, winner_home, goals_home, goals_away } = req.body;
+        console.log(req.body);
+        
+        const con = await getConnection();
+        const query = `
+        INSERT INTO bettracker.matchs (date, id_venue, city, status, league_id, country, league, season, round, team_home, team_away, id_team_home, winner_home, goals_home, goals_away)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        `;
+        const result = await con.query(query, [date, id_venue, city, status, league_id, country, league, season, round, team_home, team_away, id_team_home, winner_home, goals_home, goals_away]);
+
+        res.status(200).json({ message: "Match inserted successfully." });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+const updateTeamLeague = async (req, res) => {
+    try {
+        const { team_id, league_id } = req.body; // Asegúrate de tener team_id y league_id en el cuerpo de la solicitud
+        console.log(req.body);
+        
+        const con = await getConnection();
+        const query = `
+            UPDATE bettracker.teams
+            SET league_id = ?
+            WHERE team_id = ?;
+        `;
+        const result = await con.query(query, [league_id, team_id]);
+
+        if (result.affectedRows === 0) {
+            res.status(404).json({ message: "Team not found." });
+        } else {
+            res.status(200).json({ message: "Team league updated successfully." });
+        }
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+
 const insertNose = async (req, res) => {
     try {
         const { nosecol } = req.body;
@@ -129,6 +171,30 @@ const getTeamsByCountry = async (req, res) => {
     }
 }
 
+const getTeamsByLeagueId = async (req, res) => {
+    try {
+        const { league_id } = req.query; // Obtener el parámetro 'league_id' de la consulta
+        console.log(league_id);
+        const con = await getConnection();
+        const teams = await con.query('SELECT * FROM bettracker.teams WHERE league_id = ?', [league_id]);
+        res.json(teams);
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
+
+const getLeagueById = async (req, res) => {
+    try {
+        const { league_id } = req.query; // Obtener el parámetro 'league_id' de la consulta
+        console.log(league_id);
+        const con = await getConnection();
+        const teams = await con.query('SELECT * FROM bettracker.leagues WHERE league_id = ?', [league_id]);
+        res.json(teams);
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
+
 export const methods = {
     insertLeagues,
     getNose,
@@ -138,5 +204,9 @@ export const methods = {
     getTeams,
     getTeamsByCountry,
     insertTimeZone,
-    getTimeZone
+    getTimeZone,
+    updateTeamLeague,
+    getTeamsByLeagueId,
+    getLeagueById,
+    insertMatch
 };
