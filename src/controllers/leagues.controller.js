@@ -77,6 +77,29 @@ const updateTeamLeague = async (req, res) => {
     }
 };
 
+const updateStandings = async (req, res) => {
+    try {
+        const { position, points, goals_dif, matches_played, win, draw, lose, team_id } = req.body; // Asegúrate de tener team_id y league_id en el cuerpo de la solicitud
+        console.log(req.body);
+        
+        const con = await getConnection();
+        const query = `
+            UPDATE bettracker.teams
+            SET position = ?, points = ?, goals_dif = ?, matches_played = ?, win = ?, draw = ?, lose = ?
+            WHERE team_id = ?;
+        `;
+        const result = await con.query(query, [position, points, goals_dif, matches_played, win, draw, lose, team_id]);
+
+        if (result.affectedRows === 0) {
+            res.status(404).json({ message: "Team not found." });
+        } else {
+            res.status(200).json({ message: "Team league updated successfully." });
+        }
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
 
 const insertNose = async (req, res) => {
     try {
@@ -208,5 +231,6 @@ export const methods = {
     updateTeamLeague,
     getTeamsByLeagueId,
     getLeagueById,
-    insertMatch
+    insertMatch,
+    updateStandings
 };

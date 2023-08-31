@@ -8,6 +8,7 @@ router.post('/insertNose', leagueController.insertNose);
 router.post('/insertTeam', leagueController.insertTeam);
 router.post('/insertMatch', leagueController.insertMatch);
 router.put('/updateTeamLeague', leagueController.updateTeamLeague);
+router.put('/updateStandings', leagueController.updateStandings);
 router.post('/insertTimeZone', leagueController.insertTimeZone);
 router.get('/nose', leagueController.getNose);
 router.get('/getLeagues', leagueController.getLeagues);
