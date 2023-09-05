@@ -8,7 +8,7 @@ const db = mysql.createConnection({
     password: config.password,
 });
 
-const getConnection=()=>{
+const getConnection = () => {
     return db;
 }
 

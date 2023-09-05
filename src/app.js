@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 //routes
 import languajeRoutes from "./routes/languaje.routes";
 import leaguesRoutes from "./routes/leagues.routes";
+import loginRoutes from "./routes/login.routes";
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.set('port', 4000);
 app.use(morgan('dev'));
 
 //routes
+app.use("/api/login", loginRoutes);
 app.use("/api/languages", languajeRoutes);
 app.use("/api/leagues", leaguesRoutes);
 export default app;
