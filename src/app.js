@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import languajeRoutes from "./routes/languaje.routes";
 import leaguesRoutes from "./routes/leagues.routes";
 import loginRoutes from "./routes/login.routes";
+import matchesRoutes from "./routes/matches.routes";
 
 const app = express();
 
@@ -23,4 +24,6 @@ app.use(morgan('dev'));
 app.use("/api/login", loginRoutes);
 app.use("/api/languages", languajeRoutes);
 app.use("/api/leagues", leaguesRoutes);
+app.use("/api/matches", matchesRoutes);
+
 export default app;
