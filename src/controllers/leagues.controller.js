@@ -43,7 +43,7 @@ const insertMatch = async (req, res) => {
         
         const con = await getConnection();
         const query = `
-        INSERT INTO bettracker.matchs (date, id_venue, city, status, league_id, country, league, season, round, team_home, team_away, id_team_away, id_team_home, winner_home, goals_home, goals_away, id_match)
+        INSERT INTO bettracker.matchs (date, id_venue, city, status, league_id, country, league, season, round, team_home, team_away, id_team_home, id_team_away , winner_home, goals_home, goals_away, id_match)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
         `;
         const result = await con.query(query, [date, id_venue, city, status, league_id, country, league, season, round, team_home, team_away, id_team_home, id_team_away, winner_home, goals_home, goals_away, id_match]);
